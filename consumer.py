@@ -23,7 +23,7 @@ for p in producers:
     table_local = f'{table}_local'
     tables.append(table)
     if table_exists(get_ch_connection(), database, table_local):
-        print(f'{table}_local есть в Clickhouse.')
+        print(f'{table_local} есть в Clickhouse.')
     else:
         print(f'{table} нет в Clickhouse. Создание локальной таблицы...')
         ch_create_local(database, table, structure, get_ch_connection())
