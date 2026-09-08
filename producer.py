@@ -33,13 +33,13 @@ async def binance_websocket_btcusdt():
                     data = json.loads(message)
                     msg['data'] = data
                     c_date = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
-                    print(f'Время получения: {c_date} Данные Binance получены: {msg['data']}')
+                    print(f'Время получения: {c_date} Данные BTC/USDT получены: {msg['data']}')
 
                     if 'ping' in message:
                         await websocket.send(json.dumps({"pong": data['ping']}))
 
                     producer.produce(
-                        'binance-btcusdt-producer',
+                        'binance_btcusdt_producer',
                         value=json.dumps(msg).encode('utf-8'),
                         key=str(i).encode('utf-8'),
                     )
@@ -77,13 +77,13 @@ async def binance_websocket_ethusdt():
                     data = json.loads(message)
                     msg['data'] = data
                     c_date = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
-                    print(f'Время получения: {c_date} Данные Binance получены: {msg['data']}')
+                    print(f'Время получения: {c_date} Данные ETH/USDT получены: {msg['data']}')
 
                     if 'ping' in message:
                         await websocket.send(json.dumps({"pong": data['ping']}))
 
                     producer.produce(
-                        'binance-ethusdt-producer',
+                        'binance_ethusdt_producer',
                         value=json.dumps(msg).encode('utf-8'),
                         key=str(i).encode('utf-8'),
                     )
@@ -121,13 +121,13 @@ async def binance_websocket_ethbtc():
                     data = json.loads(message)
                     msg['data'] = data
                     c_date = datetime.strftime(datetime.now(),"%Y-%m-%d %H:%M:%S")
-                    print(f'Время получения: {c_date} Данные Binance получены: {msg['data']}')
+                    print(f'Время получения: {c_date} Данные ETH/BTC получены: {msg['data']}')
 
                     if 'ping' in message:
                         await websocket.send(json.dumps({"pong": data['ping']}))
 
                     producer.produce(
-                        'binance-ethbtc-producer',
+                        'binance_ethbtc_producer',
                         value=json.dumps(msg).encode('utf-8'),
                         key=str(i).encode('utf-8'),
                     )
