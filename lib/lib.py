@@ -1,6 +1,6 @@
 import clickhouse_connect
 import psycopg2
-from config.config import ch, pg_prod_fbe
+from config.config import ch, pg_prod_fbe, conf_consumer
 
 def get_ch_connection():
     return clickhouse_connect.get_client(**ch)
@@ -47,6 +47,21 @@ def ch_create_dist(schema, table, structure, connection, sharding_key='rand()'):
     engine = Distributed('default', '{schema}', '{table}_local', {sharding_key});
     """)
 
-def ch_insert(database, table, data, ch_connection):
-    sql = f'INSERT INTO {database}.{table} VALUES {data}'
+def ch_insert(schema, table, data, ch_connection):
+    sql = f'INSERT INTO {schema}.{table} VALUES {data}'
     ch_connection.command(sql)
+
+def kafka_to_ch(schema, table, structure, topics, connection):
+    columns_expr = ch_struct_to_columns_expr(structure)
+    connection.command(f"""
+    CREATE TABLE IF NOT EXISTS {schema}.{table}
+    ( 
+        {columns_expr}
+    ) 
+    engine = Kafka
+    SETTINGS
+            kafka_broker_list = '{conf_consumer["bootstrap.servers"]}',
+            kafka_topic_list = {topics},
+            kafka_group_name = 'clickhouse_ticker_consumer',
+            kafka_format = 'JSONEachRow'
+    """)
