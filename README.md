@@ -43,8 +43,6 @@
 
 ☑ Модуль lib/lib.py для работы с ClickHouse
 
-☑ Двухуровневая архитектура хранения (PostgreSQL → ClickHouse)
-
 ☑ Заготовка triangular_arbitrage_consumer.py
 
 ---
